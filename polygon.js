@@ -51,7 +51,7 @@ const lat = 37.5665;
 const lng = 126.978;
 const radius = 1;
 
-fetch("https://hsg5533.github.io/kakaomap/json/sigu.json")
+fetch("https://hsg5533.github.io/hang-jeong-dong/json/ver20241001.json")
   .then((res) => res.json())
   .then((data) => {
     const regions = filter(data.features, lat, lng, radius);
