@@ -1,23 +1,23 @@
 function addCommas(value) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 function calcVATIncluded(priceWithVAT, vatRate = 0.1) {
-    const supply = Math.round(priceWithVAT / (1 + vatRate));
-    const vat = Math.round(priceWithVAT - supply);
-    return { supply, vat };
+  const supply = Math.round(priceWithVAT / (1 + vatRate));
+  const vat = Math.round(priceWithVAT - supply);
+  return { supply, vat };
 }
 function calcTotalPrice(supply, vatRate = 0.1) {
-    const vat = Math.round(supply * vatRate);
-    const total = Math.round(supply + vat);
-    return { total, vat };
+  const vat = Math.round(supply * vatRate);
+  const total = Math.round(supply + vat);
+  return { total, vat };
 }
 function calculateSavings(deposit, rate, months) {
-    let total = 0;
-    const monthlyRate = rate / 12 / 100;
-    for (let month = 1; month <= months; month++) {
-        total += deposit * Math.pow(1 + monthlyRate, months - month + 1);
-    }
-    return total.toFixed(2); // 소수점 둘째 자리까지 표시
+  let total = 0;
+  const monthlyRate = rate / 12 / 100;
+  for (let month = 1; month <= months; month++) {
+    total += deposit * Math.pow(1 + monthlyRate, months - month + 1);
+  }
+  return total.toFixed(2); // 소수점 둘째 자리까지 표시
 }
 // 예시: 월 30만원, 연 5%, 12개월 적금
 const deposit = 150000;

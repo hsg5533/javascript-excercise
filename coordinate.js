@@ -8,28 +8,28 @@
  * centerPoint(points); // { x: 1, y: 1 }
  */
 function centerPoint(points) {
-    if (points.length === 2) {
-        return {
-            x: (points[0].x + points[1].x) / 2,
-            y: (points[0].y + points[1].y) / 2,
-        };
+  if (points.length === 2) {
+    return {
+      x: (points[0].x + points[1].x) / 2,
+      y: (points[0].y + points[1].y) / 2,
+    };
+  } else if (points.length > 2) {
+    let area = 0,
+      x = 0,
+      y = 0;
+    let p1, p2, f;
+    for (let i = 0, len = points.length, j = len - 1; i < len; j = i++) {
+      p1 = points[i];
+      p2 = points[j];
+      f = p1.y * p2.x - p2.y * p1.x;
+      x += (p1.x + p2.x) * f;
+      y += (p1.y + p2.y) * f;
+      area += f * 3;
     }
-    else if (points.length > 2) {
-        let area = 0, x = 0, y = 0;
-        let p1, p2, f;
-        for (let i = 0, len = points.length, j = len - 1; i < len; j = i++) {
-            p1 = points[i];
-            p2 = points[j];
-            f = p1.y * p2.x - p2.y * p1.x;
-            x += (p1.x + p2.x) * f;
-            y += (p1.y + p2.y) * f;
-            area += f * 3;
-        }
-        return { x: x / area, y: y / area };
-    }
-    else {
-        return { x: points[0].x, y: points[0].y };
-    }
+    return { x: x / area, y: y / area };
+  } else {
+    return { x: points[0].x, y: points[0].y };
+  }
 }
 /**
  * 두 지점 간의 거리를 계산합니다.
@@ -42,18 +42,19 @@ function centerPoint(points) {
  * @example calculateDistance(37.7749, -122.4194, 34.0522, -118.2437); // 558km
  */
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3; // Earth's radius (meters)
-    const phi1 = (lat1 * Math.PI) / 180;
-    const phi2 = (lat2 * Math.PI) / 180;
-    const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
-    const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
-    const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
-        Math.cos(phi1) *
-            Math.cos(phi2) *
-            Math.sin(deltaLambda / 2) *
-            Math.sin(deltaLambda / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+  const R = 6371e3; // Earth's radius (meters)
+  const phi1 = (lat1 * Math.PI) / 180;
+  const phi2 = (lat2 * Math.PI) / 180;
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+    Math.cos(phi1) *
+      Math.cos(phi2) *
+      Math.sin(deltaLambda / 2) *
+      Math.sin(deltaLambda / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 }
 /**
  * 주어진 좌표를 기준으로 반경 내에 있는 점들을 반환합니다.
@@ -66,24 +67,33 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
  * @example getCoordinates(37.7749, -122.4194, 1000, 0.01); // 좌표 리스트 반환
  */
 function getCoordinates(lat, lng, rad, stp) {
-    const positions = [];
-    const radius = rad;
-    const stepSize = stp;
-    const latitude = lat;
-    const longitude = lng;
-    const latMultiplier = radius / 111320;
-    const lonMultiplier = radius / (111320 * Math.cos((latitude * Math.PI) / 180));
-    for (let latOffset = -latMultiplier; latOffset <= latMultiplier; latOffset += stepSize) {
-        for (let lonOffset = -lonMultiplier; lonOffset <= lonMultiplier; lonOffset += stepSize) {
-            const lat = latitude + latOffset;
-            const lng = longitude + lonOffset;
-            const distance = calculateDistance(latitude, longitude, lat, lng);
-            if (distance <= radius) {
-                positions.push({ x: lat, y: lng });
-            }
-        }
+  const positions = [];
+  const radius = rad;
+  const stepSize = stp;
+  const latitude = lat;
+  const longitude = lng;
+  const latMultiplier = radius / 111320;
+  const lonMultiplier =
+    radius / (111320 * Math.cos((latitude * Math.PI) / 180));
+  for (
+    let latOffset = -latMultiplier;
+    latOffset <= latMultiplier;
+    latOffset += stepSize
+  ) {
+    for (
+      let lonOffset = -lonMultiplier;
+      lonOffset <= lonMultiplier;
+      lonOffset += stepSize
+    ) {
+      const lat = latitude + latOffset;
+      const lng = longitude + lonOffset;
+      const distance = calculateDistance(latitude, longitude, lat, lng);
+      if (distance <= radius) {
+        positions.push({ x: lat, y: lng });
+      }
     }
-    return positions;
+  }
+  return positions;
 }
 /**
  * 주어진 반경 내의 경계 좌표를 정확하게 계산합니다.
@@ -95,21 +105,21 @@ function getCoordinates(lat, lng, rad, stp) {
  * @example getAccurateRadiusBoundary(37.7749, -122.4194, 1000); // 경계 좌표 반환
  */
 function getAccurateRadiusBoundary(lat, lon, radius) {
-    const latRad = (lat * Math.PI) / 180;
-    const lonRad = (lon * Math.PI) / 180;
-    const earthRadiusKm = 6371.0;
-    const angularRadius = radius / earthRadiusKm;
-    const latMin = latRad - angularRadius;
-    const latMax = latRad + angularRadius;
-    const lonDegPerKm = (Math.PI / 180.0) * earthRadiusKm * Math.cos(latRad);
-    const lngMin = lonRad - angularRadius / lonDegPerKm;
-    const lngMax = lonRad + angularRadius / lonDegPerKm;
-    return {
-        lat_min: (latMin * 180) / Math.PI,
-        lng_min: (lngMin * 180) / Math.PI,
-        lat_max: (latMax * 180) / Math.PI,
-        lng_max: (lngMax * 180) / Math.PI,
-    };
+  const latRad = (lat * Math.PI) / 180;
+  const lonRad = (lon * Math.PI) / 180;
+  const earthRadiusKm = 6371.0;
+  const angularRadius = radius / earthRadiusKm;
+  const latMin = latRad - angularRadius;
+  const latMax = latRad + angularRadius;
+  const lonDegPerKm = (Math.PI / 180.0) * earthRadiusKm * Math.cos(latRad);
+  const lngMin = lonRad - angularRadius / lonDegPerKm;
+  const lngMax = lonRad + angularRadius / lonDegPerKm;
+  return {
+    lat_min: (latMin * 180) / Math.PI,
+    lng_min: (lngMin * 180) / Math.PI,
+    lat_max: (latMax * 180) / Math.PI,
+    lng_max: (lngMax * 180) / Math.PI,
+  };
 }
 /**
  * 주어진 중심점과 거리(km)를 기준으로 한 경계 좌표를 반환합니다.
@@ -121,24 +131,25 @@ function getAccurateRadiusBoundary(lat, lon, radius) {
  * @example getBound(37.7749, -122.4194, 10); // 경계 좌표 반환
  */
 function getBound(centerLat, centerLng, kiloMeter) {
-    const radian = kiloMeter / 6371;
-    const deltaLat = radian * (180 / Math.PI);
-    const deltaLng = (radian * (180 / Math.PI)) / Math.cos((centerLat * Math.PI) / 180);
-    const topLeft = {
-        lat: centerLat + deltaLat,
-        lng: centerLng - deltaLng,
-    };
-    const topRight = {
-        lat: centerLat + deltaLat,
-        lng: centerLng + deltaLng,
-    };
-    const bottomLeft = {
-        lat: centerLat - deltaLat,
-        lng: centerLng - deltaLng,
-    };
-    const bottomRight = {
-        lat: centerLat - deltaLat,
-        lng: centerLng + deltaLng,
-    };
-    return { topLeft, topRight, bottomLeft, bottomRight };
+  const radian = kiloMeter / 6371;
+  const deltaLat = radian * (180 / Math.PI);
+  const deltaLng =
+    (radian * (180 / Math.PI)) / Math.cos((centerLat * Math.PI) / 180);
+  const topLeft = {
+    lat: centerLat + deltaLat,
+    lng: centerLng - deltaLng,
+  };
+  const topRight = {
+    lat: centerLat + deltaLat,
+    lng: centerLng + deltaLng,
+  };
+  const bottomLeft = {
+    lat: centerLat - deltaLat,
+    lng: centerLng - deltaLng,
+  };
+  const bottomRight = {
+    lat: centerLat - deltaLat,
+    lng: centerLng + deltaLng,
+  };
+  return { topLeft, topRight, bottomLeft, bottomRight };
 }

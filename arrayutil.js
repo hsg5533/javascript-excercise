@@ -6,7 +6,7 @@
  * @example removeArray([1, 2, 3, 2], 2) // [1, 3]
  */
 function removeArray(arr, ...values) {
-    return arr.filter((item) => !values.includes(item));
+  return arr.filter((item) => !values.includes(item));
 }
 /**
  * 배열에서 특정 인덱스의 값을 제거
@@ -16,7 +16,7 @@ function removeArray(arr, ...values) {
  * @example removeIndexArray([1, 2, 3], 1) // [1, 3]
  */
 function removeIndexArray(arr, index) {
-    return arr.filter((_, i) => i !== index);
+  return arr.filter((_, i) => i !== index);
 }
 /**
  * 배열에서 특정 키의 값이 특정 문자열을 포함하는 항목을 필터링
@@ -27,9 +27,9 @@ function removeIndexArray(arr, index) {
  * @example filterArrayText([{ name: 'John' }, { name: 'Jane' }], 'name', 'Jane') // [{ name: 'Jane' }]
  */
 function filterArrayText(arr, searchKey, searchText) {
-    return arr.filter((item) => item[searchKey]
-        .toLowerCase()
-        .includes(searchText.toLowerCase()));
+  return arr.filter((item) =>
+    item[searchKey].toLowerCase().includes(searchText.toLowerCase())
+  );
 }
 /**
  * 두 배열을 병합하고, 특정 키로 중복을 제거
@@ -40,9 +40,9 @@ function filterArrayText(arr, searchKey, searchText) {
  * @example mergeArrayObject([{ id: 1 }, { id: 2 }], [{ id: 2 }, { id: 3 }], 'id') // [{ id: 1 }, { id: 2 }, { id: 3 }]
  */
 function mergeArrayObject(arr1, arr2, key) {
-    const map = new Map(arr1.map((item) => [item[key], item]));
-    arr2.forEach((item) => map.set(item[key], item));
-    return Array.from(map.values());
+  const map = new Map(arr1.map((item) => [item[key], item]));
+  arr2.forEach((item) => map.set(item[key], item));
+  return Array.from(map.values());
 }
 /**
  * 배열을 그룹화
@@ -52,11 +52,11 @@ function mergeArrayObject(arr1, arr2, key) {
  * @example groupArray([1, 2, 3, 4, 5], 2) // [[1, 2], [3, 4], [5]]
  */
 function groupArray(arr, groupSize) {
-    const result = [];
-    for (let i = 0; i < arr.length; i += groupSize) {
-        result.push(arr.slice(i, i + groupSize));
-    }
-    return result;
+  const result = [];
+  for (let i = 0; i < arr.length; i += groupSize) {
+    result.push(arr.slice(i, i + groupSize));
+  }
+  return result;
 }
 /**
  * 이차원 배열의 인덱스를 그룹화
@@ -65,7 +65,7 @@ function groupArray(arr, groupSize) {
  * @example groupedIndex([[1, 2], [3, 4]]) // [0, 1]
  */
 function groupedIndex(arr) {
-    return arr.map((_, i) => i);
+  return arr.map((_, i) => i);
 }
 /**
  * 배열을 주어진 크기로 분할
@@ -75,11 +75,11 @@ function groupedIndex(arr) {
  * @example splitArray([1, 2, 3, 4], 2) // [[1, 2], [3, 4]]
  */
 function splitArray(arr, chunkSize) {
-    let result = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-        result.push(arr.slice(i, i + chunkSize));
-    }
-    return result;
+  let result = [];
+  for (let i = 0; i < arr.length; i += chunkSize) {
+    result.push(arr.slice(i, i + chunkSize));
+  }
+  return result;
 }
 /**
  * 범위 내의 숫자를 배열로 반환
@@ -89,11 +89,11 @@ function splitArray(arr, chunkSize) {
  * @example getRangeArray(1000, 2000) // [1000, 1500, 2000]
  */
 function getRangeArray(min, max) {
-    const result = [];
-    for (let i = min; i <= max; i += 500) {
-        result.push(i);
-    }
-    return result;
+  const result = [];
+  for (let i = min; i <= max; i += 500) {
+    result.push(i);
+  }
+  return result;
 }
 /**
  * 배열에서 특정 키의 값이 특정 값과 일치하는 항목의 개수를 반환
@@ -110,13 +110,13 @@ function getRangeArray(min, max) {
  * getLength(data, 'name', 'John') // 2
  */
 function getLength(array, key, value) {
-    let count = 0;
-    for (const item of array) {
-        if (item[key] === value) {
-            count++;
-        }
+  let count = 0;
+  for (const item of array) {
+    if (item[key] === value) {
+      count++;
     }
-    return count;
+  }
+  return count;
 }
 /**
  * 주어진 데이터가 배열에 포함되어 있는지 확인하는 함수
@@ -129,7 +129,9 @@ function getLength(array, key, value) {
  * isInclude(data.exam, { exam1: "not_data" }) // false
  */
 function isInclude(dataArray, data) {
-    return dataArray.some((item) => JSON.stringify(item) === JSON.stringify(data));
+  return dataArray.some(
+    (item) => JSON.stringify(item) === JSON.stringify(data)
+  );
 }
 /**
  * 제네릭 배열을 특정 속성 기준으로 정렬하는 함수
@@ -164,22 +166,18 @@ function isInclude(dataArray, data) {
  * console.log(sortedHelpersByGrade);
  */
 function sortByKey(items, key, isAscending = true) {
-    return items.sort((a, b) => {
-        const valueA = a[key];
-        const valueB = b[key];
-        // 숫자 혹은 문자열 값을 비교
-        const parsedA = typeof valueA === "string"
-            ? parseInt(valueA)
-            : valueA;
-        const parsedB = typeof valueB === "string"
-            ? parseInt(valueB)
-            : valueB;
-        if (isNaN(parsedA) || isNaN(parsedB)) {
-            // 숫자로 변환되지 않는 값은 0으로 처리
-            return isAscending ? 1 : -1;
-        }
-        return isAscending ? parsedA - parsedB : parsedB - parsedA;
-    });
+  return items.sort((a, b) => {
+    const valueA = a[key];
+    const valueB = b[key];
+    // 숫자 혹은 문자열 값을 비교
+    const parsedA = typeof valueA === "string" ? parseInt(valueA) : valueA;
+    const parsedB = typeof valueB === "string" ? parseInt(valueB) : valueB;
+    if (isNaN(parsedA) || isNaN(parsedB)) {
+      // 숫자로 변환되지 않는 값은 0으로 처리
+      return isAscending ? 1 : -1;
+    }
+    return isAscending ? parsedA - parsedB : parsedB - parsedA;
+  });
 }
 /**
  * 제네릭 배열을 지정된 순서에 따라 정렬하는 함수
@@ -213,7 +211,7 @@ function sortByKey(items, key, isAscending = true) {
  * console.log(sortedUsers);
  */
 function sortByOrder(items, key, order) {
-    return items.sort((a, b) => order.indexOf(a[key]) - order.indexOf(b[key]));
+  return items.sort((a, b) => order.indexOf(a[key]) - order.indexOf(b[key]));
 }
 /**
  * 주어진 `items` 배열을 기준으로 `activeItems` 배열의 상태를 업데이트합니다.
@@ -261,45 +259,48 @@ function sortByOrder(items, key, order) {
  * // ]
  */
 function updateStatus(items, activeItems, key, statusKey) {
-    // activeItems에서 key에 해당하는 값들을 추출하여 string[] 타입으로 설정
-    const activeItemValues = activeItems.map((item) => item[key]);
-    const result = [
-        ...activeItems,
-    ];
-    items.forEach((item) => {
-        // item이 activeItemValues에 포함되어 있지 않다면 새로운 객체를 추가
-        if (!activeItemValues.includes(item)) {
-            // result에 새로운 객체를 추가할 때, 타입을 명시적으로 지정
-            result.push({ [key]: item, [statusKey]: false });
-        }
-    });
-    return result;
+  // activeItems에서 key에 해당하는 값들을 추출하여 string[] 타입으로 설정
+  const activeItemValues = activeItems.map((item) => item[key]);
+  const result = [...activeItems];
+  items.forEach((item) => {
+    // item이 activeItemValues에 포함되어 있지 않다면 새로운 객체를 추가
+    if (!activeItemValues.includes(item)) {
+      // result에 새로운 객체를 추가할 때, 타입을 명시적으로 지정
+      result.push({ [key]: item, [statusKey]: false });
+    }
+  });
+  return result;
 }
 // 사용 예제
 const areas = [
-    "서울",
-    "경기도",
-    "인천",
-    "세종",
-    "대전",
-    "충북",
-    "충남",
-    "전북",
-    "전남",
-    "광주",
-    "강원",
-    "경북",
-    "경남",
-    "대구",
-    "울산",
-    "부산",
-    "제주",
+  "서울",
+  "경기도",
+  "인천",
+  "세종",
+  "대전",
+  "충북",
+  "충남",
+  "전북",
+  "전남",
+  "광주",
+  "강원",
+  "경북",
+  "경남",
+  "대구",
+  "울산",
+  "부산",
+  "제주",
 ];
 const activeRegions = [
-    { region: "경기도", regionStatus: true },
-    { region: "대구", regionStatus: true },
-    { region: "광주", regionStatus: true },
+  { region: "경기도", regionStatus: true },
+  { region: "대구", regionStatus: true },
+  { region: "광주", regionStatus: true },
 ];
 // areas 예제 호출
-const updatedRegions = updateStatus(areas, activeRegions, "region", "regionStatus");
+const updatedRegions = updateStatus(
+  areas,
+  activeRegions,
+  "region",
+  "regionStatus"
+);
 console.log(updatedRegions);
